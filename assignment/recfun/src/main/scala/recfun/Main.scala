@@ -28,8 +28,24 @@ object Main {
   /**
    * Exercise 2
    */
-    def balance(chars: List[Char]): Boolean = {
-      true
+  def balance(chars: List[Char]): Boolean = {
+      def verify(counter: Int, elements: List[Char]): Boolean = {
+          if (elements.isEmpty) {
+              if (counter == 0) true
+              else false
+          } else if(counter < 0) {
+              false
+          } else {
+              var tempCounter = counter
+              if (elements.head == '(') {
+                  tempCounter = counter + 1
+              } else if (elements.head == ')') {
+                  tempCounter = counter - 1
+              }
+              verify(tempCounter, elements.tail)
+          }
+      }
+      verify(0, chars)
   }
   
   /**
