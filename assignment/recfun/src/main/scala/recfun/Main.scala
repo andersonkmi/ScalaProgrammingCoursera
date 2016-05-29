@@ -51,5 +51,19 @@ object Main {
   /**
    * Exercise 3
    */
-    def countChange(money: Int, coins: List[Int]): Int = ???
+    def countChange(money: Int, coins: List[Int]): Int = {
+      def findCombinations(amount: Int, coins: List[Int]): Int = {
+          if(amount == 0) {
+              1
+          } else if(amount < 0) {
+              0
+          } else if(coins.isEmpty && amount > 0) {
+              0
+          } else {
+              findCombinations(amount, coins.tail) + findCombinations(amount - coins.head, coins)
+          }
+      }
+
+      findCombinations(money, coins.sortWith(_.compareTo(_) < 0))
+    }
   }
