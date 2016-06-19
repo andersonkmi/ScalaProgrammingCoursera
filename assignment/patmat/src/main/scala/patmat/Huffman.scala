@@ -137,7 +137,25 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-    def combine(trees: List[CodeTree]): List[CodeTree] = ???
+    def combine(trees: List[CodeTree]): List[CodeTree] = {
+      def combineFunc(forkedTree: CodeTree, remainingTrees: List[CodeTree]) : List[CodeTree] = {
+          if(weight(forkedTree) < weight(remainingTrees.head)) {
+              val newTree = forkedTree :: remainingTrees
+              newTree
+          } else {
+              val newTree = remainingTrees.head :: combineFunc(forkedTree, remainingTrees.tail)
+              newTree
+          }
+      }
+
+      if(trees.length < 2) {
+          trees
+      } else {
+          val forkNode = makeCodeTree(trees.head, trees.tail.head)
+          val combinedTrees = trees.drop(2)
+          combineFunc(forkNode, combinedTrees)
+      }
+  }
   
   /**
    * This function will be called in the following way:
@@ -186,7 +204,7 @@ object Huffman {
 
   /**
    * What does the secret message say? Can you decode it?
-   * For the decoding use the `frenchCode' Huffman tree defined above.
+   * For the decoding use the frenchCode' Huffman tree defined above.
    */
   val secret: List[Bit] = List(0,0,1,1,1,0,1,0,1,1,1,0,0,1,1,0,1,0,0,1,1,0,1,0,1,1,0,0,1,1,1,1,1,0,1,0,1,1,0,0,0,0,1,0,1,1,1,0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,1)
 
