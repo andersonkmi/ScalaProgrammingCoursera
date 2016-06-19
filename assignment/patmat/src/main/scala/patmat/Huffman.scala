@@ -75,7 +75,37 @@ object Huffman {
    *       println("integer is  : "+ theInt)
    *   }
    */
-    def times(chars: List[Char]): List[(Char, Int)] = ???
+    def times(chars: List[Char]): List[(Char, Int)] = {
+
+        def charAccumulator(items: List[Char], accumulator: List[(Char, Int)]): List[(Char, Int)] = {
+            if(items.isEmpty) accumulator
+            else {
+                val charToSearch = items.head
+                if(accumulator.contains(charToSearch)) {
+                    val emptyList = List[(Char, Int)]()
+                    copyListAcc(accumulator, emptyList, charToSearch)
+                } else {
+                    val tuple = (charToSearch, 1)
+                    charAccumulator(items.tail, tuple :: accumulator)
+                }
+            }
+        }
+        def copyListAcc(source: List[(Char, Int)], destination: List[(Char, Int)], searchedItem: Char): List[(Char, Int)] = {
+          if(source.isEmpty) destination
+          else {
+              if(source.head._1 == searchedItem) {
+                  val counter = source.head._2 + 1
+                  (searchedItem, counter) :: destination
+              } else {
+                  source.head :: destination
+              }
+          }
+          copyListAcc(source, destination, searchedItem)
+        }
+
+      val result = List[(Char, Int)]()
+      charAccumulator(chars, result)
+    }
   
   /**
    * Returns a list of `Leaf` nodes for a given frequency table `freqs`.
